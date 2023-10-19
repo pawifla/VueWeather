@@ -1,10 +1,13 @@
 <template>
   <div class="hello">
-    <p>
-        This is the weather.
-    </p>
+    <p>This is the weather.</p>
     <h3>Weather</h3>
-    <input type="autocomplete" v-model="location" @change="setLocation" placeholder="Type your location:"/>
+    <input
+      type="autocomplete"
+      v-model="location"
+      @change="setLocation"
+      placeholder="Type your location:"
+    />
     <ul v-if="filteredLocations.length > 0">
       <li v-for="l in filteredLocations" :key="l">{{ l }}</li>
     </ul>
@@ -13,33 +16,65 @@
 </template>
 
 <script>
-import { ref, computed } from 'vue';
+import { ref, computed, onMounted } from 'vue';
+import axios from 'axios';
+import { apiKey } from '../assets/apikey';
+
+//make api key seperate file
+const apiKeyString =  apiKey;
+let url = `http://dataservice.accuweather.com/locations/v1/autocomplete?apikey=${apiKeyString}&q=searchText`;
+// const cityKey = 50;
+
 
 export default {
 
     setup(){
         const location = ref('');
         const selectedLocation = ref('');
-        const locations = ['Nevada', 'California', 'Alaska'];
+        // const locations = ['Nevada', 'California', 'Alaska'];
+        const locations = ref([]);
+        let localizedNameArray = [];
+
+      const getLocations = async () => {
+        if(location.value != null && location.value !== ''){
+         try{
+          let searchUrl =url.replace('searchText', location.value);
+          const response = await axios.get(searchUrl);
+          let data = response.data;
+          localizedNameArray = data.map((item) => item.LocalizedName);
+          locations.value = localizedNameArray;
+         } catch (error){
+          console.error('Error fetching data:', error);
+         }
+        }else{
+          localizedNameArray = [];
+        }
+      };
+
+      onMounted(() =>{
+        getLocations();
+      });
+
 
         const setLocation = () => {
             selectedLocation.value = 'Location:' + location.value;
+            getLocations();
         };
 
         const filteredLocations = computed(() => {
           const loweredLocations = location.value.toLowerCase();
-          return locations.filter((l) => l.toLowerCase().includes(loweredLocations));
+          return locations.value.filter((l) => l.toLowerCase().includes(loweredLocations));
 
         });
         return {
             location,
             selectedLocation,
             setLocation,
-            filteredLocations
+            filteredLocations,
+            getLocations
         };
     },
 };
-
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
