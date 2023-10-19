@@ -5,7 +5,7 @@
     <input
       type="autocomplete"
       v-model="location"
-      @change="setLocation"
+      @input="setLocation"
       placeholder="Type your location:"
     />
     <ul v-if="filteredLocations.length > 0">
@@ -41,13 +41,17 @@ export default {
           let searchUrl =url.replace('searchText', location.value);
           const response = await axios.get(searchUrl);
           let data = response.data;
-          localizedNameArray = data.map((item) => item.LocalizedName);
+          localizedNameArray = data
+                .filter((item) => item.Country.ID === "US")
+                .map((item) => item.LocalizedName);
           locations.value = localizedNameArray;
+          console.log(localizedNameArray);
          } catch (error){
           console.error('Error fetching data:', error);
          }
         }else{
           localizedNameArray = [];
+          locations.value = [];
         }
       };
 
