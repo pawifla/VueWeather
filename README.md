@@ -8,6 +8,8 @@ Simple weather app - search things, show things, the end
 - Make separate components for these
 - Make page with data
 - Style
+
+  
 ### In Progress
 
 ### Done
