@@ -1,21 +1,29 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  
-  <AutoComplete></AutoComplete>
-  <div style="display: none;">
-    <HelloWorld></HelloWorld>
+  <div>
+  <h1>Vue Weather!</h1>
+  <AutoComplete @shareLocation="setLocation"></AutoComplete>
+  <WeatherCard></WeatherCard>
   </div>
 </template>
 
+
 <script>
-import HelloWorld from './components/HelloWorld.vue'
 import AutoComplete from './components/AutoComplete.vue'
+import WeatherCard from './components/WeatherCard.vue'
 
 export default {
   name: 'App',
+  prpps:{
+    weatherLocation: '' 
+  },
   components: {
     AutoComplete,
-    HelloWorld
+    WeatherCard
+  }, methods:{
+    setLocation(location){
+      console.log('location got', location);
+      this.weatherLocation = location;
+    }
   }
 }
 </script>

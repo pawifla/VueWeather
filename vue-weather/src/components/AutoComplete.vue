@@ -9,7 +9,10 @@
       placeholder="Type your location:"
     />
     <ul v-if="filteredLocations.length > 0">
-      <li v-for="l in filteredLocations" :key="l">{{ l }}</li>
+      <li v-for="l in filteredLocations" :key="l">
+        <button 
+        @click="$emit('shareLocation', l)">{{ l }}</button>
+      </li>
     </ul>
     <p>{{ selectedLocation }}</p>
   </div>
