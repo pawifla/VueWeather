@@ -1,7 +1,7 @@
 <template>
   <img alt="Vue logo" src="./assets/logo.png">
   
-  <WeatherCard></WeatherCard>
+  <AutoComplete></AutoComplete>
   <div style="display: none;">
     <HelloWorld></HelloWorld>
   </div>
@@ -9,12 +9,12 @@
 
 <script>
 import HelloWorld from './components/HelloWorld.vue'
-import WeatherCard from './components/WeatherCard.vue'
+import AutoComplete from './components/AutoComplete.vue'
 
 export default {
   name: 'App',
   components: {
-    WeatherCard,
+    AutoComplete,
     HelloWorld
   }
 }
